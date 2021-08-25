@@ -1,0 +1,374 @@
+@font-face {
+    font-family: "Roboto";
+    src: url('../font/Roboto-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../font/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../font/Roboto-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+:root {
+    --standard-seat: #03A9F4;
+    --vip-seat: #8BC34A;
+    --booked-seat: #ccc;
+}
+
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: darkcyan;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+.container {
+    max-width: 800px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    margin: 20px 0;
+    background-color: #aaa;
+}
+
+.ticket-form {
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.movie-info {
+    position: relative;
+    z-index: 1;
+    padding-right: 60px;
+}
+
+.movie-info__title-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.movie-info__title {
+    margin: 0;
+    margin-right: 20px;
+}
+
+.movie-info__badge {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 5px;
+    background-color: #666;
+    border-radius: 5px;
+}
+
+.movie-info__cinema-name {
+    margin-top: 0;
+    color: #aaa;
+}
+
+.ticket-form__close {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-image: url("../img/close_icon.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 80%;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.ticket-form__close:hover, .ticket-form__close:focus {
+    opacity: 1;
+}
+
+.cinema {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.cinema-screen {
+    display: flex;
+    justify-content: center;
+    height: 130px;
+}
+
+.cinema-poster {
+    height: 270px;
+    border-radius: 5px;
+    box-shadow: 0 50px 40px -30px rgba(255, 255, 255, 0.2);
+    transform-origin: center top;
+    transform: perspective(2000px) rotateX(-65deg);
+}
+
+.cinema-seats {
+    transform-style: preserve-3d;
+    transform-origin: 50% 0;
+    transform: perspective(2000px) rotateX(45deg);
+    margin-bottom: -30px;
+}
+
+.cinema-seats__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cinema-seats__list:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+.cinema-seats__list::before,
+.cinema-seats__list::after {
+    font-size: 13px;
+    color: #fff;
+}
+
+.cinema-seats__list:first-child::before,
+.cinema-seats__list:first-child::after {
+    content: '1';
+}
+
+.cinema-seats__list:nth-child(2)::before,
+.cinema-seats__list:nth-child(2)::after {
+    content: '2';
+}
+
+.cinema-seats__list:nth-child(3)::before,
+.cinema-seats__list:nth-child(3)::after {
+    content: '3';
+}
+
+.cinema-seats__list:nth-child(4)::before,
+.cinema-seats__list:nth-child(4)::after {
+    content: '4';
+}
+
+.cinema-seat {
+    width: 25px;
+    height: 25px;
+    transform: translateZ(5px);
+}
+
+/* CHECKBOX */
+
+/* Oddiy holati */
+
+.seat {
+    display: block;
+    cursor: pointer;
+}
+
+.seat-control {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    background-color: var(--standard-seat);
+    border-radius: 50%;
+}
+
+.vip-seat .seat-control {
+    background-color: var(--vip-seat);
+}
+
+.seat-control::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    border: 2px dotted var(--standard-seat);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, border 0.3s ease;
+}
+
+.vip-seat .seat-control::before {
+    border-color: var(--vip-seat);
+}
+
+.seat-number {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Focus holati */
+.seat-checkbox:focus + .seat-control::before {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.seat-checkbox:focus + .seat-control .seat-number {
+    opacity: 1;
+} 
+
+/* Hover holati */
+.seat:hover .seat-control::before {
+    transform: scale(1);
+    opacity: 1;
+    border: 2px solid var(--standard-seat);
+}
+
+.vip-seat:hover .seat-control::before {
+    border-color: var(--vip-seat);
+} 
+
+.seat:hover .seat-number {
+    opacity: 1;
+} 
+
+/* Active holati */
+.seat:active .seat-checkbox:not(:disabled) + .seat-control {
+    opacity: 0.5;
+}
+
+/* Checked holati */
+.seat-checkbox:checked + .seat-control::before {
+    transform: scale(1);
+    opacity: 1;
+    border: 3px solid var(--standard-seat);
+}
+
+.vip-seat .seat-checkbox + .seat-control::before {
+    border-color: var(--vip-seat);
+}
+
+.seat-checkbox:checked + .seat-control .seat-number {
+    opacity: 1;
+}
+
+/* Disabled holati */
+.seat-checkbox:disabled + .seat-control {
+    background-color: var(--booked-seat);
+    cursor: not-allowed;
+}
+
+.seat-checkbox:disabled + .seat-control::before {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.seat-checkbox:disabled + .seat-control .seat-number {
+    color: #777;
+    opacity: 1;
+}
+
+/* TICKET FORM FOOTER */
+
+.ticket-form__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* SEATS PRICES */
+
+.seats-prices {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.seat-price {
+    display: flex;
+    margin-right: 30px;
+}
+
+.seat-price::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--standard-seat);
+    margin-right: 5px;
+}
+
+.seat-price__vip::before {
+    background: var(--vip-seat);
+}
+
+.seat-price__booked::before {
+    background-color: var(--booked-seat);
+}
+
+.ticket-form__submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--standard-seat);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.ticket-form__submit:hover {
+    opacity: 0.8;
+}
